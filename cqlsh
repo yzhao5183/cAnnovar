@@ -1,0 +1,316 @@
+./bin/cassandra -f
+cqlsh
+grep 'chr2' hg19_genomicSuperDups.txt
+grep -r 'chr2'
+head hg19_genomicSuperDups.txt 
+ln -s from to (shortcut)
+sudo netstat -plnt (port listening)
+ps aux | grep cassandra (get service id)
+wc -l < /dir/file.txt (count line)
+./bin/nodetool -h 127.0.0.1 tpstats
+./bin/nodetool -h 127.0.0.1 cfstats
+
+CREATE KEYSPACE "annovar" WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
+DROP KEYSPACE "annovar";
+DESCRIBE annovar.refGene;
+USE annovar;
+CREATE TABLE geneStat (variantID text PRIMARY KEY, g1000g2015aug_all float, g1000g2015aug_eur float, g1000g2015aug_afr float, g1000g2015aug_eas float, g1000g2015aug_sas float, g1000g2015aug_amr float, esp6500siv2_all float, ExAC_ALL float, ExAC_AFR float, ExAC_AMR float, ExAC_EAS float, ExAC_FIN float, ExAC_NFE float, ExAC_OTH float, ExAC_SAS float, snp138 text, gwasCatalog text, gerpgt2 float, cg69 float, CLINSIG text, CLNDBN text, CLNACC text, CLNDSDB text, CLNDSDBID text, cosmic70 text, nci60 float, FATHMM_coding float, FATHMM_noncoding float, GWAVA_region_score float, GWAVA_tss_score float, GWAVA_unmatched_score int, Eigen float, SIFT_score float, SIFT_pred text, Polyphen2_HDIV_score float, Polyphen2_HDIV_pred text, Polyphen2_HVAR_score float, Polyphen2_HVAR_pred text, LRT_score float, LRT_pred text, MutationTaster_score float, MutationTaster_pred text, MutationAssessor_score float, MutationAssessor_pred text, FATHMM_score float, FATHMM_pred text, PROVEAN_score float, PROVEAN_pred text, VEST3_score float, CADD_raw float, CADD_phred float, DANN_score float, fathmm_MKL_coding_score float, fathmm_MKL_coding_pred text, MetaSVM_score float, MetaSVM_pred text, MetaLR_score float, MetaLR_pred text, integrated_fitCons_score float, integrated_confidence_value int, GERP_RS float, phyloP7way_vertebrate float, phyloP20way_mammalian float, phastCons7way_vertebrate float, phastCons20way_mammalian float, SiPhy_29way_logOdds float, Kaviar_AF float, Kaviar_AC int, Kaviar_AN int);
+CREATE TABLE geneStat2 (id text, chrom int, start int, end int, phastConsElements46way text, tfbsConsSites text, wgRna text, targetScanS text, genomicSuperDups text, dgvMerged text, PRIMARY KEY ((id), chrom, start, end)) WITH CLUSTERING ORDER BY (chrom ASC, start ASC, end ASC);
+CREATE TABLE snp (variantID text, name text PRIMARY KEY);
+CREATE TABLE cytoband (chrom int, start int, name text , stop int, PRIMARY KEY (chrom, start));
+CREATE TABLE refGene (id text, chrom int, strand boolean, txStart int, txEnd int, cdsStart int, cdsEnd int, exonCount int, exonStarts text, exonEnds text, name text, Mrna text, Protein1 text, mrnaStartOffset int, mrnaEndOffset int, filter boolean, PRIMARY KEY ((id), chrom, txStart, txEnd)) WITH CLUSTERING ORDER BY (chrom ASC, txStart ASC, txEnd ASC);
+CREATE TABLE variation (id text, subID text, varID text, geno int, cov int, cov_alt int, PRIMARY KEY ((id), subID, varID, cov)) WITH CLUSTERING ORDER BY (subID ASC, varID ASC, cov ASC);
+CREATE TABLE variants (variantID text PRIMARY KEY, chrom int, cytoband text, start int, stop int, ref text, alt text, Func_refGene text, Gene_refGene text, GeneDetail_refGene text, ExonicFunc_refGene text, g1000g2015aug_all text, g1000g2015aug_eur text, g1000g2015aug_afr text, g1000g2015aug_eas text, g1000g2015aug_sas text, g1000g2015aug_amr text, esp6500siv2_all text, ExAC_ALL text, ExAC_AFR text, ExAC_AMR text, ExAC_EAS text, ExAC_FIN text, ExAC_NFE text, ExAC_OTH text, ExAC_SAS text, snp138 text, gwasCatalog text, gerpgt2 text, cg69 text, CLINSIG text, CLNDBN text, CLNACC text, CLNDSDB text, CLNDSDBID text, cosmic70 text, nci60 text, FATHMM_coding text, FATHMM_noncoding text, GWAVA_region_score text, GWAVA_tss_score text, GWAVA_unmatched_score text, Eigen text, SIFT_score text, SIFT_pred text, Polyphen2_HDIV_score text, Polyphen2_HDIV_pred text, Polyphen2_HVAR_score text, Polyphen2_HVAR_pred text, LRT_score text, LRT_pred text, MutationTaster_score text, MutationTaster_pred text, MutationAssessor_score text, MutationAssessor_pred text, FATHMM_score text, FATHMM_pred text, PROVEAN_score text, PROVEAN_pred text, VEST3_score text, CADD_raw text, CADD_phred text, DANN_score text, fathmm_MKL_coding_score text, fathmm_MKL_coding_pred text, MetaSVM_score text, MetaSVM_pred text, MetaLR_score text, MetaLR_pred text, integrated_fitCons_score text, integrated_confidence_value text, GERP_RS text, phyloP7way_vertebrate text, phyloP20way_mammalian text, phastCons7way_vertebrate text, phastCons20way_mammalian text, SiPhy_29way_logOdds text, Kaviar_AF text, Kaviar_AC text, Kaviar_AN text, phastConsElements46way text, tfbsConsSites text, wgRna text, targetScanS text, genomicSuperDups text, dgvMerged text);
+
+CREATE INDEX ON refGene (chrom);
+CREATE INDEX ON refGene (txStart);
+CREATE INDEX ON refGene (txEnd);
+CREATE INDEX ON geneStat2 (chrom);
+CREATE INDEX ON geneStat2 (start);
+CREATE INDEX ON geneStat2 (end);
+CREATE INDEX ON geneStat (g1000g2015aug_all);
+CREATE INDEX ON geneStat (g1000g2015aug_eur);
+CREATE INDEX ON geneStat (g1000g2015aug_afr);
+CREATE INDEX ON geneStat (g1000g2015aug_eas);
+CREATE INDEX ON geneStat (g1000g2015aug_sas);
+CREATE INDEX ON geneStat (g1000g2015aug_amr);
+CREATE INDEX ON geneStat (esp6500siv2_all);
+CREATE INDEX ON geneStat (ExAC_ALL);
+CREATE INDEX ON geneStat (ExAC_AFR);
+CREATE INDEX ON geneStat (ExAC_AMR);
+CREATE INDEX ON geneStat (ExAC_EAS);
+CREATE INDEX ON geneStat (ExAC_FIN);
+CREATE INDEX ON geneStat (ExAC_NFE);
+CREATE INDEX ON geneStat (ExAC_OTH);
+CREATE INDEX ON geneStat (ExAC_SAS);
+CREATE INDEX ON geneStat (gerpgt2);
+CREATE INDEX ON geneStat (cg69);
+CREATE INDEX ON geneStat (nci60);
+CREATE INDEX ON geneStat (GWAVA_region_score);
+CREATE INDEX ON geneStat (GWAVA_tss_score);
+CREATE INDEX ON geneStat (GWAVA_unmatched_score);
+CREATE INDEX ON geneStat (SIFT_score);
+CREATE INDEX ON geneStat (Polyphen2_HDIV_score);
+CREATE INDEX ON geneStat (Polyphen2_HVAR_score);
+CREATE INDEX ON geneStat (LRT_score);
+CREATE INDEX ON geneStat (MutationTaster_score);
+CREATE INDEX ON geneStat (MutationAssessor_score);
+CREATE INDEX ON geneStat (FATHMM_score);
+CREATE INDEX ON geneStat (PROVEAN_score);
+CREATE INDEX ON geneStat (VEST3_score);
+CREATE INDEX ON geneStat (CADD_raw);
+CREATE INDEX ON geneStat (CADD_phred);
+CREATE INDEX ON geneStat (DANN_score);
+CREATE INDEX ON geneStat (fathmm_MKL_coding_score);
+CREATE INDEX ON geneStat (MetaSVM_score);
+CREATE INDEX ON geneStat (MetaLR_score);
+CREATE INDEX ON geneStat (integrated_fitCons_score);
+CREATE INDEX ON geneStat (integrated_confidence_value);
+CREATE INDEX ON geneStat (GERP_RS);
+CREATE INDEX ON geneStat (phyloP7way_vertebrate);
+CREATE INDEX ON geneStat (phyloP20way_mammalian);
+CREATE INDEX ON geneStat (phastCons7way_vertebrate);
+CREATE INDEX ON geneStat (phastCons20way_mammalian);
+CREATE INDEX ON geneStat (SiPhy_29way_logOdds);
+CREATE INDEX ON geneStat (Kaviar_AF);
+CREATE INDEX ON geneStat (Kaviar_AC);
+CREATE INDEX ON geneStat (Kaviar_AN);
+
+ALTER TABLE geneStat ADD gwasCatalog text;
+ALTER TABLE geneStat DROP snp138;
+DROP TABLE variants;
+DROP INDEX genestat_snp138_idx;
+UPDATE geneStat SET "ExAC_ALL" = ExAC_ALL, "ExAC_AFR" = ExAC_AFR WHERE "variantID" = variantID;
+DELETE FROM geneStat WHERE variantID = '';
+SELECT * FROM variants LIMIT 5;
+SELECT COUNT(*) FROM snp WHERE snp138 = 'rs447' ALLOW FILTERING;
+SELECT * FROM geneStat WHERE variantID = ':1564953_1564953:.' ALLOW FILTERING;
+SELECT * FROM variants WHERE variantID = '1:1564953_1564953:.' ALLOW FILTERING;
+SELECT * FROM geneStat WHERE kaviar_ac>=0 LIMIT 50 ALLOW FILTERING;
+SELECT * FROM refGene WHERE id = 'NM_001305275:1:955502' ALLOW FILTERING;
+SELECT * FROM refGene2 WHERE chrom = 13 AND txStart < 32913729 AND txEnd >= 32913730 AND filter = true ALLOW FILTERING;
+DELETE * FROM refGene WHERE id ;
+
+$ANNOVAR_TB $INPATH'XXX.avinput' $ANNOVAR_DATABASE -protocol refGene,phastConsElements46way,tfbsConsSites,cytoBand,wgRna,targetScanS,genomicSuperDups,dgvMerged,gwasCatalog,1000g2015aug_all,1000g2015aug_eur,1000g2015aug_afr,1000g2015aug_eas,1000g2015aug_sas,1000g2015aug_amr,snp138,esp6500siv2_all,gerp++gt2,cg69,clinvar_20160302,cosmic70,nci60,exac03,fathmm,gwava,eigen,dbnsfp30a,kaviar_20150923 --outfile $INPATH'XXX_annovar' --operation g,r,r,r,r,r,r,r,r,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f --csvout --remove --verbose --otherinfo --nastring
+
+http://varianttools.sourceforge.net/Annotation/RefGene
+https://www.broadinstitute.org/igv/Cytoband
+http://varnomen.hgvs.org/recommendations/DNA/
+http://annovar.openbioinformatics.org/en/latest/user-guide/gene/#understanding-how-annovar-address-rare-problems-in-gene-definition
+ftp://ftp.ncbi.nlm.nih.gov/
+http://genome.sph.umich.edu/wiki/Variant_classification
+
+//refGene
+//id(0)|chrom(1)|txstart(2)|txend(3)|cdsstart(4)|cdsend(5)|exonends(6)|exonstarts(7)|
+//exoncount(8)|filter(9)|mrna(10)|mrnaendoffset(11)|mrnastartoffset(12)|name(13)|
+//nonCoding(14)|protein1(15)|strand(16)
+
+//geneStat
+// variantid  | cadd_phred | cadd_raw | cg69 | clinsig | clnacc | clndbn | clndsdb | clndsdbid | cosmic70 | dann_score | eigen | esp6500siv2_all | exac_afr | exac_all | 
+// exac_amr | exac_eas | exac_fin | exac_nfe | exac_oth | exac_sas | fathmm_coding | fathmm_mkl_coding_pred | fathmm_mkl_coding_score | fathmm_noncoding | fathmm_pred | 
+// fathmm_score | g1000g2015aug_afr | g1000g2015aug_all | g1000g2015aug_amr | g1000g2015aug_eas | g1000g2015aug_eur | g1000g2015aug_sas | gerp_rs | gerpgt2 | gwascatalog | gwava_region_score |
+// gwava_tss_score | gwava_unmatched_score | integrated_confidence_value | integrated_fitcons_score | kaviar_ac | kaviar_af | kaviar_an | lrt_pred | lrt_score | metalr_pred | 
+// metalr_score | metasvm_pred | metasvm_score | mutationassessor_pred | mutationassessor_score | mutationtaster_pred | mutationtaster_score | nci60 | phastcons20way_mammalian |
+// phastcons7way_vertebrate | phylop20way_mammalian | phylop7way_vertebrate | polyphen2_hdiv_pred | polyphen2_hdiv_score | polyphen2_hvar_pred | polyphen2_hvar_score | 
+//  provean_pred | provean_score | sift_pred | sift_score | siphy_29way_logodds | snp138 | vest3_score
+
+gerpgt2
+//typically regarded as evolutioanrily conserved and potentially functional. Anything less than 2 is not informative, which helps reduce file size substantially.
+cg69
+//allele frequency data from 69 related subjects (including the 46 unrelated subjects). We can set up a MAF threshold of 0.05, so that only very common SNPs are dropped. 
+clinvar
+//relationships among variation and human health
+cosmic70
+//"Catalogue Of Somatic Mutations In Cancer". It includes somatic mutations reported in literature in various types of cancers
+nci60
+//allele frequency information from these 60 cell lines based on their exome sequencing data
+fathmm
+//Functional Analysis through Hidden Markov Models 
+gwava
+//GWAVA is a tool which aims to predict the functional impact of non-coding genetic variants based on a wide range of annotations of non-coding elements (largely from ENCODE/GENCODE), along with genome-wide properties such as evolutionary conservation and GC-content.
+eigen
+//unsupervised learning approach, integrating functional genomic annotations for coding and noncoding variants
+kaviar 
+//Kaviar (~Known VARiants) is a compilation of SNVs, indels, and complex variants observed in humans, designed to facilitate testing for the novelty and frequency of observed variants. 
+SIFT_score
+// D: Deleterious (sift<=0.05); T: tolerated (sift>0.05)
+Polyphen2_HDIV_score
+// D: Probably damaging (>=0.957), P: possibly damaging (0.453<=pp2_hdiv<=0.956); B: benign (pp2_hdiv<=0.452)(used when evaluating rare alleles at loci potentially involved in complex phenotypes, dense mapping of regions identified by genome-wideassociation studies,and analysis of natural selection from sequence data)
+Polyphen2_HVAR_score
+// D: Probably damaging (>=0.909), P: possibly damaging (0.447<=pp2_hdiv<=0.909); B: benign (pp2_hdiv<=0.446)(used for diagnostics of Mendelian diseases, which requires distinguishing mutations with drastic effects from all the remaining human variation, including abundant mildly deleterious alleles)
+LRT_score
+// D: Deleterious; N: Neutral; U: Unknown
+MutationTaster_score
+// "A"  ("disease_causing_automatic"); "D" ("disease_causing"); "N" ("polymorphism"); "P" ("polymorphism_automatic")
+MutationAssessor_score
+// H: high; M: medium; L: low; N: neutral. H/M means functional and L/N means non-functional
+FATHMM_score
+// D: Deleterious; T: Tolerated
+PROVEAN_score
+// PROVEAN (Protein Variation Effect Analyzer) is a software tool which predicts whether an amino acid substitution or indel has an impact onthe biological function of a protein. PROVEAN is useful for filtering sequence variants to identify nonsynonymous or indel variants that are predicted to be functionally important.
+VEST3_score
+// VEST (Variant Effect Scoring Tool) is a machine learning method that predicts the functional significance of missense mutations observed through genome sequencing, allowing mutations to be prioritized in subsequent functional studies, based on the probability that they impair protein activity.
+CADD_raw
+// (Combined Annotation Dependent Depletion) is a score that is based on SVM on multiple other scores
+DANN_score
+// whole-genome variants by training a deep neural network (DNN).seems to perform much better than CADD and FATHMM
+fathmm_MKL_coding_score
+// Multiple kernel learning, Functional Analysis through Hidden Markov Models
+MetaSVM_score
+// D: Deleterious; T: Tolerated ( (1) perform imputation for whole-exome variants and fill out missing scores for SIFT, PolyPhen, MutationAssessor and so on. (2) Normalize all scores to 0-1 range (3) use a radial SVM model to train prediction model using all available scores and some population genetics parameters, and then apply the model on whole-exome variants)
+MetaLR_score
+// D: Deleterious; T: Tolerated
+integrated_fitCons_score
+// fitCons score predicts the fraction of genomic positions belonging to a specific function class (defined by epigenomic "fingerprint")that are under selectivepressure. Scores range from 0 to 1, with a larger score indicating a higher proportion of nucleic sites of the functional class the genomic position belong to are under selective pressure, therefore more likely to be functional important.
+integrated_confidence_value
+// 0-highly significant scores (approx. p<.003); 1-significant scores(approx. p<.05); 2-informative scores(approx. p<.25); 3-other scores (approx. p>=.25)
+phyloP7way_vertebrate
+// higher scores are more deleterious (based on multiple alignments of 7 genomes. The larger the score, the more conserved the site.)
+phastCons7way_vertebrate
+// higher scores are more deleterious (phastCons score. The larger the score, the more conserved the site.)
+GERP_RS
+// higher scores are more deleterious (for coding variants)
+SiPhy_29way_logOdds
+// higher scores are more deleterious (based on 29 mammals genomes. The larger the score, the more conserved the site.)
+
+ //variant
+// variantid (0)| alt (1)| cadd_phred (2)| cadd_raw (3)| cg69  (4)| chrom (5)| clinsig (6)|
+// clnacc (7)| clndbn (8)| clndsdb (9)| clndsdbid (10)| cosmic70 (11)| cytoband (12)| dann_score (13)| 
+// dgvmerged (14)| eigen (15)| esp6500siv2_all (16)| exac_afr (17)| exac_all (18)| exac_amr (19)| 
+// exac_eas (20)| exac_fin (21)| exac_nfe (22)| exac_oth (23)| exac_sas (24)| exonicfunc_refgene (25)| 
+// fathmm_coding (26)| fathmm_mkl_coding_pred (27)| fathmm_mkl_coding_score (28)| fathmm_noncoding (29)|
+// fathmm_pred (30)| fathmm_score (31)| func_refgene (32)| g1000g2015aug_afr (33)| g1000g2015aug_all (34)|
+// g1000g2015aug_amr (35)| g1000g2015aug_eas (36)| g1000g2015aug_eur (37)| g1000g2015aug_sas (38)| 
+// gene_refgene (39)| genedetail_refgene (40)| genomicsuperdups (41)| gerp_rs (42)| gerpgt2 (43)| 
+// gwascatalog (44)| gwava_region_score (45)| gwava_tss_score (46)| gwava_unmatched_score (47)| 
+// integrated_confidence_value (48)| integrated_fitcons_score (49)| kaviar_ac (50)| kaviar_af (51)| 
+// kaviar_an (52)| lrt_pred (53)| lrt_score (54)| metalr_pred (55)| metalr_score (56)| metasvm_pred (57)| 
+// metasvm_score (58)| mutationassessor_pred (59)| mutationassessor_score (60)| mutationtaster_pred (61)| 
+// mutationtaster_score (62)| nci60 (63)| phastcons20way_mammalian (64)| phastcons7way_vertebrate (65)| 
+// phastconselements46way (66)| phylop20way_mammalian (67)| phylop7way_vertebrate (68)| 
+// polyphen2_hdiv_pred (69)| polyphen2_hdiv_score (70)| polyphen2_hvar_pred (71)| polyphen2_hvar_score (72)| 
+// provean_pred (73)| provean_score (74)| ref (75)| sift_pred (76)| sift_score (77)| siphy_29way_logodds (78)| 
+// snp138  (79)| start (80)| stop (81)| targetscans (82)| tfbsconssites (83)| vest3_score (84)| wgrna(85)
+
+//annotated.txt
+//chr|cytoband|start|stop|ref|alt|Func_refGene|Gene_refGene|GeneDetail_refGene|ExonicFunc_refGene|esp6500siv2_all|exac_afr|exac_all|exac_amr|exac_eas
+//exac_fin|exac_nfe|exac_oth|exac_sas|g1000g2015aug_afr|g1000g2015aug_all|g1000g2015aug_amr|g1000g2015aug_eas|g1000g2015aug_eur|g1000g2015aug_sas
+
+
+if (Func_refGene.contains("exonic")) {
+    aFunc_refGene1 = Func_refGene.indexOf("exonic");
+} else if (Func_refGene.contains("splicing")) {
+    aFunc_refGene1 = Func_refGene.indexOf("splicing");
+} else if (Func_refGene.contains("ncRNA_exonic")) {
+    aFunc_refGene1 = Func_refGene.indexOf("ncRNA_exonic");
+} else if (Func_refGene.contains("ncRNA_splicing")) {
+    aFunc_refGene1 = Func_refGene.indexOf("ncRNA_splicing");
+} else if (Func_refGene.contains("ncRNA_intronic")) {
+    aFunc_refGene1 = Func_refGene.indexOf("ncRNA_intronic");
+} else if (Func_refGene.contains("UTR5")) {
+    aFunc_refGene1 = Func_refGene.indexOf("UTR5");
+    if (Func_refGene.contains("UTR3")) {
+	aFunc_refGene2 = Func_refGene.indexOf("UTR3");
+    }
+} else if (Func_refGene.contains("UTR3")) {
+    aFunc_refGene1 = Func_refGene.indexOf("UTR3");
+} else if (Func_refGene.contains("intronic")) {
+    aFunc_refGene1 = Func_refGene.indexOf("intronic");
+} else if (Func_refGene.contains("upstream")) {
+    aFunc_refGene1 = Func_refGene.indexOf("upstream");
+    if (Func_refGene.contains("downstream")) {
+	aFunc_refGene2 = Func_refGene.indexOf("downstream");
+    }
+} else if (Func_refGene.contains("downstream")) {
+    aFunc_refGene1 = Func_refGene.indexOf("downstream");
+}
+        
+
+if (id.startsWith("NR")) {
+
+//System.out.println("gene.getName() "+ gene.getName());
+if (UCSCrefGene2.betweenTX(variant.start, variant.end)) {
+
+    if (UCSCrefGene2.isSplice(variant.start, variant.end)) {
+	aFunc_refGene = "ncRNA_splicing";
+
+    } else if (UCSCrefGene2.inExon(variant.start, variant.end) >= 0) {
+	aFunc_refGene = "ncRNA_exonic";
+
+    } else if (UCSCrefGene2.inExon(variant.start, variant.end) < 0) {
+	aFunc_refGene = "ncRNA_intronic";
+    } 
+} else if (UCSCrefGene2.isDownStream(variant.start, variant.end)) {
+
+    if (strand) {
+	aFunc_refGene = "downstream";
+    } else {
+	aFunc_refGene = "upstream";
+
+    }
+} else if (UCSCrefGene2.isUpStream(variant.start, variant.end)) {
+
+    if (strand) {
+	aFunc_refGene = "upstream";
+    } else {
+	aFunc_refGene = "downstream";
+    }
+
+} else {
+    aFunc_refGene = "intergenic";
+}
+
+} else if (UCSCrefGene2.betweenTX(variant.start, variant.end)) {
+
+if (UCSCrefGene2.isSplice(variant.start, variant.end)) {
+    aFunc_refGene = "splicing";
+} else if (UCSCrefGene2.inExon(variant.start, variant.end) == -1) {
+
+	aFunc_refGene = "intronic";
+	
+	// Annovar result tag exonic from betweenCDS
+} else if (UCSCrefGene2.betweenCDS(variant.start, variant.end)) {                    	                                    		
+	aFunc_refGene = "exonic";
+    aExonicFunc_refGene = UCSCrefGene2.getExonicFunc_refGene(variant.start, variant.end, variant.ref, variant.alt);
+} else if (UCSCrefGene2.in3utr(variant.start, variant.end)) {
+    if (strand) {
+	aFunc_refGene = "UTR3";
+    } else {
+	aFunc_refGene = "UTR5";
+    }
+
+} else if (UCSCrefGene2.in5utr(variant.start, variant.end)) {
+    if (strand) {
+	aFunc_refGene = "UTR5";
+    } else {
+	aFunc_refGene = "UTR3";
+    }
+}
+
+} else if (UCSCrefGene2.isDownStream(variant.start, variant.end)) {
+if (strand) {
+    aFunc_refGene = "downstream";
+} else {
+    aFunc_refGene = "upstream";
+}
+} else if (UCSCrefGene2.isUpStream(variant.start, variant.end)) {
+
+if (strand) {
+    aFunc_refGene = "upstream";
+} else {
+    aFunc_refGene = "downstream";
+}
+
+} else {
+aFunc_refGene = "intergenic";
+}
+
+CREATE TABLE refGene2 (id text, chrom int, strand boolean, txStart int, txEnd int, cdsStart int, cdsEnd int, exonCount int, exonStart int, exonEnd int, name text, Mrna text, Protein1 text, mrnaStartOffset int, mrnaEndOffset int, filter boolean, nonCoding boolean, PRIMARY KEY ((id), chrom, txStart, txEnd, cdsStart, cdsEnd, exonStart, exonEnd)) WITH CLUSTERING ORDER BY (chrom ASC, txStart ASC, txEnd ASC, cdsStart ASC, cdsEnd ASC, exonStart ASC, exonEnd ASC);
+CREATE INDEX ON refGene2 (chrom);
+CREATE INDEX ON refGene2 (txStart);
+CREATE INDEX ON refGene2 (txEnd);
+CREATE INDEX ON refGene2 (cdsStart);
+CREATE INDEX ON refGene2 (cdsEnd);
+CREATE INDEX ON refGene2 (exonStart);
+CREATE INDEX ON refGene2 (exonEnd);
+CREATE TABLE refGeneMrna (id text PRIMARY KEY, Mrna text, Protein1 text);
